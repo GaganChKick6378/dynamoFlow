@@ -1,0 +1,35 @@
+{
+    "name": "Message Processing Flow",
+    "description": "Test flow for message processing and DynamoDB operations",
+    "nodes": [
+        {
+            "id": "message_processor",
+            "type": "MessageProcessorComponent",
+            "data": {
+                "api_key": "${OPENAI_API_KEY}",
+                "message": "There's a bug in the login page",
+                "category": "BUGS",
+                "channel_id": "test_channel",
+                "existing_items": []
+            }
+        },
+        {
+            "id": "dynamodb",
+            "type": "DynamoDBComponent",
+            "data": {
+                "region_name": "us-west-2",
+                "operation": "append_message",
+                "table_name": "BUGS",
+                "channel_id": "test_channel"
+            }
+        }
+    ],
+    "edges": [
+        {
+            "source": "message_processor",
+            "target": "dynamodb",
+            "sourceHandle": "result",
+            "targetHandle": "new_item"
+        }
+    ]
+} 
